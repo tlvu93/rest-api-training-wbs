@@ -1,23 +1,42 @@
-import logo from './logo.svg';
+
+import { useEffect } from 'react';
+import { useState } from 'react';
 import './App.css';
+import "./styles.css";
+
+
+function User(user) {
+  return (
+    <li>
+      <img src={user.picture.medium} />
+      <p>{user.name.first} {user.name.last}</p>
+      <div>{user.email}</div>
+    </li>
+  )
+}
 
 function App() {
+
+  const [users, setUsers] = useState([])
+
+  useEffect(() => {
+    const url = "https://randomuser.me/api/?results=10"; // Get 10 random users
+
+    fetch(url)
+      .then((response) => response.json())
+      .then(data => {
+        setUsers(data.results);
+      })
+  }, []);
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div class="block">
+        <ul id="users">
+          {users.map(User)}
+        </ul>
+      </div>
     </div>
   );
 }
